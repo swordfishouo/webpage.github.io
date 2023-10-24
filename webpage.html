@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://thunkable.github.io/webviewer-extension/thunkableWebviewerExtension.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <span id="messageDisplay"></span>
+    <br />
+    <h1>有這行字代表網頁無錯誤</h1>
+  </body>
+  <script type="text/javascript">
+
+  //當我們從應用程式收到訊息時，將其顯示在頁面上
+    ThunkableWebviewerExtension.receiveMessage(function(message) {
+      document.getElementById('messageDisplay').innerHTML = message;
+    });
+
+    /*
+    當我們從應用程式收到需要返回值的訊息時，返回字串“快速回應”，除非訊息是“慢速訊息”。
+    如果訊息是“慢訊息”，等待四秒，然後返回字串「慢響應」。
+    緩慢的回應表明這對於需要時間執行的 API 呼叫是如何運作的。
+    */
+    ThunkableWebviewerExtension.receiveMessageWithReturnValue(function(message, callback) {
+      if (message === 'slow message') {
+        setTimeout(() => callback('slow response'), 4000);
+      } else {
+        callback('fast response');
+      }
+    });
+  </script>
+</html>
